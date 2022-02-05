@@ -13,6 +13,8 @@ from django.utils.functional import cached_property
 from drf_messages import logger
 from drf_messages.conf import messages_settings
 
+import uuid
+
 
 class MessageQuerySet(models.QuerySet):
 
@@ -146,6 +148,7 @@ class MessageTag(models.Model):
 
 
 class Message(models.Model):
+    id = models.UUIDField(primary_key=True,unique=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="messages")
     session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True, blank=True, default=None,
                                 related_name="messages", help_text="The session where the message was submitted to.")
