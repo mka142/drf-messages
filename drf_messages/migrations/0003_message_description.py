@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('drf_messages', '0003_alter_message_id'),
+        ('drf_messages', '0002_message_session_key'),
     ]
 
     operations = [
