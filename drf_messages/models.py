@@ -81,13 +81,14 @@ class MessageManager(models.Manager):
         else:
             MessageTag.objects.create(message=message, text=str(extra_tags))
 
-    def create_message(self, request, message, level, extra_tags=None):
+    def create_message(self, request, message, level, extra_tags=None,description=None):
         """
         Create a new message to the database.
         :param request: Request context.
         :param message: Text body of the message.
         :param level: Integer describing the type of the message.
         :param extra_tags: One or more tags to attach to the message.
+        :param description: Message Description
         :return: Message object.
         """
         # extract session
@@ -106,20 +107,23 @@ class MessageManager(models.Manager):
             view=request.resolver_match.view_name if request.resolver_match else '',
             message=message,
             level=level,
+            description = description
         )
         # create extra tags
         if extra_tags:
             self._create_extra_tags(message_obj, extra_tags)
 
+
         return message_obj
 
-    def create_user_message(self, user, message, level, extra_tags=None):
+    def create_user_message(self, user, message, level, extra_tags=None,description=None):
         """
         Create a new message to the database.
         :param user: User object (from settings.AUTH_USER_MODEL).
         :param message: Text body of the message.
         :param level: Integer describing the type of the message.
         :param extra_tags: One or more tags to attach to the message.
+        :param description: Message Description
         :return: Message object.
         """
         # create message
@@ -127,6 +131,7 @@ class MessageManager(models.Manager):
             user=user,
             message=message,
             level=level,
+            description=description
         )
         # create extra tags
         if extra_tags:
@@ -158,6 +163,7 @@ class Message(models.Model):
                             help_text="The view where the message was submitted from.")
 
     message = models.CharField(max_length=1024, blank=True, help_text="The actual text of the message.")
+    description = models.TextField(null=True,default=None,blank=True)
     level = models.IntegerField(help_text="An integer describing the type of the message.")
 
     read_at = models.DateTimeField(blank=True, null=True, default=None, help_text="When the message was read.")
