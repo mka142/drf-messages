@@ -153,7 +153,7 @@ class MessageTag(models.Model):
 
 
 class Message(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="messages")
     session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True, blank=True, default=None,
                                 related_name="messages", help_text="The session where the message was submitted to.")
